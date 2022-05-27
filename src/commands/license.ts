@@ -9,7 +9,11 @@ import { FuelInfo } from '../models/fuel-info';
 
 export class License extends BaseCommand implements ICommand {
     public async handle(): Promise<void> {
-        const input = this.getArguments()[0];
+        const input = this.message.options.getString('kenteken');
+
+        console.log('ayyyy');
+        console.log(input);
+
         if (!input) {
             return;
         }
@@ -25,7 +29,7 @@ export class License extends BaseCommand implements ICommand {
         if (!vehicle) {
             this.reply('Ik kon dat kenteken niet vindn kerol');
 
-            Sightings.insert(license, this.message.author);
+            Sightings.insert(license, this.message.user);
             return;
         }
 
@@ -49,7 +53,7 @@ export class License extends BaseCommand implements ICommand {
             response.addField('Eerder gespot door', sightings);
         }
 
-        Sightings.insert(license, this.message.author);
+        Sightings.insert(license, this.message.user);
 
         const links = new MessageActionRow().addComponents(
             new MessageButton()
